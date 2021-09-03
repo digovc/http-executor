@@ -5,7 +5,11 @@ const fs = require('fs');
 const app = express();
 const port = 3456;
 const timeout = 1000 * 60 * 3; // 3 minutes
-const apikey = process.env.HTTP_EXECUTOR_KEY || 'notsecret';
+const apikey = process.env.HTTP_EXECUTOR_KEY || false;
+
+if (!apikey) {
+  throw 'Invalid API key.'
+}
 
 let commands = [];
 
@@ -16,7 +20,7 @@ function readCommands(error, content) {
 fs.readFile('commands.json', readCommands);
 
 app.get('/exec/:command', (req, res) => {
-  const key = req.query.k || 'notsecret';
+  const key = req.query.k || false;
 
   if (key != apikey) {
     throw 'Invalid API key.';
