@@ -1,10 +1,12 @@
 [
   {
     "name": "test",
-    "command": "echo test"
+    "command": "echo test",
+    "workdir": "."
   },
   {
     "name": "error",
-    "command": "start ahsuahsuhfsudh"
+    "command": "rmdir foo/bar/nothing-to-see-here",
+    "workdir": "."
   }
 ]
