@@ -16,7 +16,7 @@ function readCommands(error, content) {
 fs.readFile('commands.json', readCommands);
 
 app.get('/exec/:command', (req, res) => {
-  const key = req.query.k ?? 'notsecret';
+  const key = req.query.k || 'notsecret';
 
   if (key != apikey) {
     throw 'Invalid API key.';
