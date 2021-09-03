@@ -1,0 +1,10 @@
+[
+  {
+    "name": "test",
+    "command": "echo test"
+  },
+  {
+    "name": "error",
+    "command": "start ahsuahsuhfsudh"
+  }
+]
