@@ -47,6 +47,7 @@ app.get('/exec/:command', (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send(error);
+    return;
   }
 
   console.log('Sucess!');
