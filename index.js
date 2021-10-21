@@ -1,4 +1,4 @@
-const execSync = require('child_process').execSync;
+const execFileSync = require('child_process').execFileSync;
 const express = require('express');
 const fs = require('fs');
 
@@ -8,7 +8,7 @@ const timeout = 1000 * 60 * 3; // 3 minutes
 const apikey = process.env.HTTP_EXECUTOR_KEY || false;
 
 if (!apikey) {
-  throw 'Invalid API key.'
+  throw 'Invalid API key.';
 }
 
 let commands = [];
@@ -26,6 +26,13 @@ app.get('/exec/:command', (req, res) => {
     throw 'Invalid API key.';
   }
 
+  let args = req.query.args;
+
+  if (args != null) {
+    args = decodeURIComponent(args);
+    args = args.split(';');
+  }
+
   const commandName = req.params.command;
   const command = commands.find((x) => x.name == commandName);
 
@@ -35,7 +42,7 @@ app.get('/exec/:command', (req, res) => {
   const options = { stdio: 'inherit', timeout: timeout, cwd: command.workdir };
 
   try {
-    execSync(command.command, options);
+    execFileSync(command.command, args, options);
   } catch (error) {
     console.error(error);
     throw error.message;
