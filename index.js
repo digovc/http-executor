@@ -46,7 +46,7 @@ app.get('/exec/:command', (req, res) => {
     execFileSync(command.command, args, options);
   } catch (error) {
     console.error(error);
-    res.status(code).send(error);
+    res.status(500).send(error);
   }
 
   console.log('Sucess!');
