@@ -1,6 +1,7 @@
 const execFileSync = require('child_process').execFileSync;
 const express = require('express');
 const fs = require('fs');
+require('dotenv').config();
 
 const app = express();
 const port = 3456;
