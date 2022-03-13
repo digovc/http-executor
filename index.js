@@ -25,7 +25,7 @@ const app = express();
 app.use(express.json());
 
 app.post('/exec', (req, res) => {
-  const request = JSON.parse(req.body);
+  const request = req.body;
 
   console.log({ request })
 
