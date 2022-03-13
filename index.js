@@ -75,7 +75,7 @@ app.get('/result/:hash', (req, res) => {
     res.send(data);
     fs.unlink(path)
   } else {
-    res.status(102).send({ message: 'Running...' });
+    res.send({ isRunning: true, message: 'Running...' });
   }
 });
 
