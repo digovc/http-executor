@@ -70,7 +70,7 @@ app.get('/result/:hash', (req, res) => {
   const path = `/tmp/pipeline-${ hash }`
 
   if (fs.existsSync(path)) {
-    const dataJson = fs.readFileSync(path)
+    const dataJson = fs.readFileSync(path).toString()
     const data = JSON.parse(dataJson)
     res.send(data);
   } else {
