@@ -73,7 +73,6 @@ app.get('/result/:hash', (req, res) => {
     const dataJson = fs.readFileSync(path).toString()
     const data = JSON.parse(dataJson)
     res.send(data);
-    fs.unlink(path)
   } else {
     res.send({ isRunning: true, message: 'Running...' });
   }
