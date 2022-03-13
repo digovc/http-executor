@@ -53,7 +53,7 @@ app.post('/exec', (req, res) => {
 
   const result = {}
 
-  execFile(command.command, args, options, (error: ?child_process$Error, stdout: Buffer, stderr: Buffer) => {
+  execFile(command.command, args, options, (error, stdout, stderr) => {
     if (error) {
       console.error(error);
       result.error = error.message;
