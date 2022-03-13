@@ -46,8 +46,10 @@ app.post('/exec', (req, res) => {
 
   const options = { timeout: timeout, cwd: command.workdir };
 
+  let output = "";
+
   try {
-    const output = execFileSync(command.command, args, options).toString();
+    output = execFileSync(command.command, args, options).toString();
   } catch (error) {
     console.error(error);
     res.status(500).send(error.message);
@@ -55,6 +57,7 @@ app.post('/exec', (req, res) => {
   }
 
   console.log('Sucess!');
+
   res.send({
     success: true,
     message: 'Command executed',
