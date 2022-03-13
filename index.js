@@ -1,12 +1,10 @@
 const execFileSync = require('child_process').execFileSync;
 const express = require('express');
-const bodyParser = require('body-parser')
 const fs = require('fs');
 
 require('dotenv').config();
 
 const app = express();
-app.use(bodyParser.json({ type: 'application/*+json' }))
 
 const port = 3456;
 const timeout = 1000 * 60 * 3; // 3 minutes
