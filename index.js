@@ -1,4 +1,4 @@
-const execFileSync = require('child_process').execFileSync;
+const execFile = require('child_process').execFile;
 const express = require('express');
 const fs = require('fs');
 const crypto = require("crypto");
@@ -53,16 +53,16 @@ app.post('/exec', (req, res) => {
 
   const result = {}
 
-  try {
-    result.output = execFileSync(command.command, args, options).toString();
-  } catch (error) {
-    console.error(error);
-    res.status(500).send(error.message);
-    result.error = error.message;
-  } finally {
+  execFile(command.command, args, options, (error: ?child_process$Error, stdout: Buffer, stderr: Buffer) => {
+    if (error) {
+      console.error(error);
+      result.error = error.message;
+    }
+
+    result.output = stdout.toString();
     const data = JSON.stringify(result)
     fs.writeFileSync(`/tmp/pipeline-${ hash }`, data)
-  }
+  });
 });
 
 app.get('/result/:hash', (_, res) => {
