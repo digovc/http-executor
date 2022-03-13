@@ -65,7 +65,7 @@ app.post('/exec', (req, res) => {
   });
 });
 
-app.get('/result/:hash', (_, res) => {
+app.get('/result/:hash', (req, res) => {
   const hash = req.params.hash
   const path = `/tmp/pipeline-${ hash }`
 
