@@ -41,28 +41,40 @@ app.post('/exec', (req, res) => {
     throw 'Invalid command.';
   }
 
-  console.log('Executing command:');
+  const hash = crypto.randomBytes(20).toString('hex');
+
+  res.send({ message: 'Command started.', hash });
+
+  console.log(`Executing command (hash: ${ hash }):`);
   console.log({ command });
 
   const options = { timeout: timeout, cwd: command.workdir };
 
-  let output = "";
+  const result = {}
 
   try {
-    output = execFileSync(command.command, args, options).toString();
+    result.output = execFileSync(command.command, args, options).toString();
   } catch (error) {
     console.error(error);
     res.status(500).send(error.message);
-    return;
+    result.error = error.message;
+  } finally {
+    const data = JSON.stringify(result)
+    fs.writeFileSync(`/tmp/pipeline-${ hash }`, data)
   }
+});
 
-  console.log('Sucess!');
+app.get('/result/:hash', (_, res) => {
+  const hash = req.params.hash
+  const path = `/tmp/pipeline-${ hash }`
 
-  res.send({
-    success: true,
-    message: 'Command executed',
-    output
-  });
+  if (fs.exists(path)) {
+    const dataJson = fs.readFileSync(path)
+    const data = JSON.parse(dataJson)
+    res.send(data);
+  } else {
+    res.status(102).send({ message: 'Running...' });
+  }
 });
 
 app.get('/health', (_, res) => res.send("I'm fine!"));
