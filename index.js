@@ -20,22 +20,21 @@ function readCommands(error, content) {
 
 fs.readFile('commands.json', readCommands);
 
-app.get('/exec/:command', (req, res) => {
-  const key = req.query.k || false;
+app.post('/exec', (req, res) => {
+  const request = JSON.parse(req.body);
 
-  if (key != apikey) {
+  console.log({ request })
+
+  const key = request.key || false;
+
+  if (key !== apikey) {
     throw 'Invalid API key.';
   }
 
-  let args = req.query.args;
+  let args = request.args;
 
-  if (args != null) {
-    args = decodeURIComponent(args);
-    args = args.split(';');
-  }
-
-  const commandName = req.params.command;
-  const command = commands.find((x) => x.name == commandName);
+  const commandName = request.command;
+  const command = commands.find((x) => x.name === commandName);
 
   console.log('Executing command:');
   console.log({ command });
@@ -57,5 +56,5 @@ app.get('/exec/:command', (req, res) => {
 app.get('/health', (_, res) => res.send("I'm fine!"));
 
 app.listen(port, () => {
-  console.log(`Listening at http://0.0.0.0:${port}`);
+  console.log(`Listening at http://0.0.0.0:${ port }`);
 });
