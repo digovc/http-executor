@@ -4,8 +4,6 @@ const fs = require('fs');
 
 require('dotenv').config();
 
-const app = express();
-
 const port = 3456;
 const timeout = 1000 * 60 * 3; // 3 minutes
 const apikey = process.env.HTTP_EXECUTOR_KEY || false;
@@ -22,21 +20,26 @@ function readCommands(error, content) {
 
 fs.readFile('commands.json', readCommands);
 
+const app = express();
+
+app.use(express.json());
+
 app.post('/exec', (req, res) => {
   const request = JSON.parse(req.body);
 
   console.log({ request })
 
-  const key = request.key || false;
-
-  if (key !== apikey) {
+  if (request.key !== apikey) {
     throw 'Invalid API key.';
   }
 
   let args = request.args;
 
-  const commandName = request.command;
-  const command = commands.find((x) => x.name === commandName);
+  const command = commands.find((x) => x.name === request.command);
+
+  if (!command) {
+    throw 'Invalid command.';
+  }
 
   console.log('Executing command:');
   console.log({ command });
