@@ -5,7 +5,7 @@ const fs = require('fs');
 require('dotenv').config();
 
 const port = 3456;
-const timeout = process.env.TIMEOUT ?? 1000 * 60 * 3;
+const timeout = 1000 * 60 * 15;
 const apikey = process.env.HTTP_EXECUTOR_KEY || false;
 
 if (!apikey) {
@@ -44,10 +44,10 @@ app.post('/exec', (req, res) => {
   console.log('Executing command:');
   console.log({ command });
 
-  const options = { stdio: 'inherit', timeout: timeout, cwd: command.workdir };
+  const options = { timeout: timeout, cwd: command.workdir };
 
   try {
-    execFileSync(command.command, args, options);
+    const output = execFileSync(command.command, args, options).toString();
   } catch (error) {
     console.error(error);
     res.status(500).send(error.message);
@@ -55,7 +55,11 @@ app.post('/exec', (req, res) => {
   }
 
   console.log('Sucess!');
-  res.send('Command executed!');
+  res.send({
+    success: true,
+    message: 'Command executed',
+    output
+  });
 });
 
 app.get('/health', (_, res) => res.send("I'm fine!"));
