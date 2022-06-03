@@ -6,6 +6,7 @@ After=network.target
 [Service]
 Type=simple
 ExecStart=/usr/bin/node /usr/local/http-executor/index.js
+WorkingDirectory=/usr/local/http-executor
 Restart=on-failure
 
 [Install]
