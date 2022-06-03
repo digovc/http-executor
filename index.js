@@ -4,7 +4,7 @@ const fs = require('fs');
 require('dotenv').config();
 
 const app = express();
-const port = process.env.HTTP_EXECUTOR_PORT;
+const port = process.env.HTTP_EXECUTOR_PORT || 3456;
 const timeout = 1000 * 60 * 3; // 3 minutes
 const apikey = process.env.HTTP_EXECUTOR_KEY || false;
 
