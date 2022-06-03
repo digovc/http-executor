@@ -1,0 +1,12 @@
+[Unit]
+Description=http-executor
+Documentation=https://github.com/digovc/http-executor
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/node /usr/local/http-executor/index.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
